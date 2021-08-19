@@ -27,6 +27,17 @@ public class DebitCardImpl implements DebitCardService {
 
     @Override
     public Mono<DebitCardResponseDto> findById(String id) {
-        return Mono.empty();
+        return debitCardRepository.findById(id)
+                .map(DebitCardResponseDto::entityToResponse)
+                .switchIfEmpty(Mono.empty())
+                .onErrorResume(throwable -> Mono.error(new Exception("Error on getting the data")));
+    }
+
+    @Override
+    public Mono<DebitCardResponseDto> findByCardNumber(String cardNumber) {
+        return debitCardRepository.findByCardNumber(cardNumber)
+                .map(DebitCardResponseDto::entityToResponse)
+                .switchIfEmpty(Mono.empty())
+                .onErrorResume(throwable -> Mono.error(new Exception("Error on getting the data")));
     }
 }

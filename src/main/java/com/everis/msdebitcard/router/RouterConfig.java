@@ -9,12 +9,12 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 
 @Configuration
 public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> debitCardRoutes(DebitCardHandler handler) {
-        return route(GET("/debit-cards"), handler::findAll);
+        return route(GET("/debit-cards"), handler::findAllDebitCards)
+                .andRoute(GET("/debit-cards/{id}"), handler::findDebitCardById);
     }
 }
