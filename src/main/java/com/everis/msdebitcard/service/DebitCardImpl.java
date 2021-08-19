@@ -18,15 +18,15 @@ public class DebitCardImpl implements DebitCardService {
     private DebitCardRepository debitCardRepository;
 
 
-
     @Override
-    public Flux<DebitCard> findAll() {
+    public Flux<DebitCardResponseDto> findAll() {
         return debitCardRepository.findAll()
+                .map(DebitCardResponseDto::entityToResponse)
                 .onErrorResume(throwable -> Mono.error(new Exception("Error on get all DebitCards")));
     }
 
     @Override
-    public Mono<DebitCard> findById(String id) {
+    public Mono<DebitCardResponseDto> findById(String id) {
         return Mono.empty();
     }
 }

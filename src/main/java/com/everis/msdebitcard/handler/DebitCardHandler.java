@@ -19,7 +19,7 @@ public class DebitCardHandler {
 
     public Mono<ServerResponse> findAll(ServerRequest serverRequest) {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(debitCardService.findAll(), DebitCard.class);
+                .body(debitCardService.findAll(), DebitCardResponseDto.class);
     }
 
 
