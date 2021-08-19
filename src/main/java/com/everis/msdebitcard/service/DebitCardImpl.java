@@ -3,6 +3,7 @@ package com.everis.msdebitcard.service;
 import com.everis.msdebitcard.domain.model.DebitCard;
 import com.everis.msdebitcard.domain.repository.DebitCardRepository;
 import com.everis.msdebitcard.domain.service.DebitCardService;
+import com.everis.msdebitcard.dto.response.DebitCardResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,13 +17,16 @@ public class DebitCardImpl implements DebitCardService {
     @Autowired
     private DebitCardRepository debitCardRepository;
 
+
+
     @Override
-    public Optional<Flux<DebitCard>> findAll() {
-        return Optional.empty();
+    public Flux<DebitCard> findAll() {
+        return debitCardRepository.findAll()
+                .onErrorResume(throwable -> Mono.error(new Exception("Error on get all DebitCards")));
     }
 
     @Override
-    public Optional<Mono<DebitCard>> findById(String id) {
-        return Optional.empty();
+    public Mono<DebitCard> findById(String id) {
+        return Mono.empty();
     }
 }
