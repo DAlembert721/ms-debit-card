@@ -23,7 +23,7 @@ public class DebitCard {
 
     private Customer customer;
 
-    private List<Account> registeredAccounts;
+    private List<BankAccount> registeredAccounts;
 
     @NotNull
     private LocalDate creationDate;

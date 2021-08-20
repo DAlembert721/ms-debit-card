@@ -1,6 +1,6 @@
 package com.everis.msdebitcard.dto.response;
 
-import com.everis.msdebitcard.domain.model.Account;
+import com.everis.msdebitcard.domain.model.BankAccount;
 import com.everis.msdebitcard.domain.model.Customer;
 import com.everis.msdebitcard.domain.model.DebitCard;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.List;
 public class DebitCardResponseDto {
     private String cardNumber;
     private Customer customer;
-    private List<Account> registeredAccounts;
+    private List<BankAccount> registeredAccounts;
     private LocalDate expirationDate;
 
 
