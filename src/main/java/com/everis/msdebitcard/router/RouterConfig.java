@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 
@@ -15,6 +16,7 @@ public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> debitCardRoutes(DebitCardHandler handler) {
         return route(GET("/debit-cards"), handler::findAllDebitCards)
-                .andRoute(GET("/debit-cards/{id}"), handler::findDebitCardById);
+                .andRoute(GET("/debit-cards/{id}"), handler::findDebitCardById)
+                .andRoute(POST("/debit-cards"), handler::createDebitCard);
     }
 }

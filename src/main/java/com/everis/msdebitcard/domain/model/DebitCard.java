@@ -8,7 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Document("DebitCard")
 @Getter
@@ -23,12 +25,30 @@ public class DebitCard {
 
     private Customer customer;
 
-    private List<BankAccount> registeredAccounts;
+    private List<BankAccount> registeredAccounts = new ArrayList<>();
 
     @NotNull
     private LocalDate creationDate;
 
     @NotNull
     private LocalDate expirationDate;
+
+    static public DebitCard generateBankAccount(BankAccount bankAccount) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardNumber(DebitCard.generateNumber());
+        debitCard.setCreationDate(LocalDate.now());
+        debitCard.setExpirationDate(LocalDate.from(LocalDate.now()).plusYears(4));
+        debitCard.getRegisteredAccounts().add(bankAccount);
+        return debitCard;
+    }
+
+    static private String generateNumber() {
+        Random random = new Random();
+        int number = 0;
+        for(int i=0; i < 16; i++) {
+            number+=random.nextInt()*10^i;
+        }
+        return Integer.toString(number);
+    }
 
 }
