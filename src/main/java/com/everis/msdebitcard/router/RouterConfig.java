@@ -14,9 +14,9 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> debitCardRoutes(DebitCardHandler handler) {
-        return route(GET("/debit-cards"), handler::findAllDebitCards)
-                .andRoute(GET("/debit-cards/{id}"), handler::findDebitCardById)
-                .andRoute(POST("/debit-cards"), handler::createDebitCard)
-                .andRoute(PUT("/debit-cards"), handler::updateAccounts);
+        return route(GET("/ms-debit-card/debit-cards"), handler::findAllDebitCards)
+                .andRoute(GET("/ms-debit-card/debit-cards/{id}"), handler::findDebitCardById)
+                .andRoute(POST("/ms-debit-card/debit-cards"), handler::createDebitCard)
+                .andRoute(PUT("/ms-debit-card/debit-cards"), handler::updateAccounts);
     }
 }
