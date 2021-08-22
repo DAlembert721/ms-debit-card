@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -39,16 +40,27 @@ public class DebitCard {
         debitCard.setCreationDate(LocalDate.now());
         debitCard.setExpirationDate(LocalDate.from(LocalDate.now()).plusYears(4));
         debitCard.getRegisteredAccounts().add(bankAccount);
+        debitCard.setCustomer(bankAccount.getCustomer());
         return debitCard;
     }
 
     static private String generateNumber() {
         Random random = new Random();
-        int number = 0;
+        String card = "";
         for(int i=0; i < 16; i++) {
-            number+=random.nextInt()*10^i;
+            card = card.concat(Integer.toString(random.nextInt(10)));
         }
-        return Integer.toString(number);
+        return card;
+    }
+
+    static public DebitCard updateAccounts(BankAccount bankAccount, DebitCard debitCard) {
+        if(debitCard.getRegisteredAccounts().contains(bankAccount)) {
+            int index = debitCard.getRegisteredAccounts().indexOf(bankAccount);
+            Collections.swap(debitCard.getRegisteredAccounts(), 0, index);
+        } else  {
+            debitCard.getRegisteredAccounts().add(bankAccount);
+        }
+        return debitCard;
     }
 
 }

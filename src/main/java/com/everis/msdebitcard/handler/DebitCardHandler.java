@@ -37,17 +37,36 @@ public class DebitCardHandler {
 
     public Mono<ServerResponse> createDebitCard(ServerRequest serverRequest) {
         String accountNumber = serverRequest.queryParam("accountNumber")
-                .orElseThrow(() ->  new NoParamsException("Includes account number param"));
+                .orElseThrow(() ->  new NoParamsException("Must be include account number params"));
         return debitCardService.createDebitCard(accountNumber)
                 .flatMap(debitCardResponseDto -> ServerResponse.status(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(debitCardResponseDto))
                 .switchIfEmpty(
-                        ErrorResponse.buildBadResponse("The account with number: ".concat(accountNumber).concat("can't be founded"),
+                        ErrorResponse.buildBadResponse("The account with number: "
+                                        .concat(accountNumber).concat("can't be founded"),
                                 HttpStatus.BAD_REQUEST))
                 .onErrorResume(throwable ->
                         ErrorResponse.buildBadResponse(throwable.getMessage(), HttpStatus.BAD_REQUEST));
 
+    }
+
+    public Mono<ServerResponse> updateAccounts(ServerRequest serverRequest) {
+        String accountNumber = serverRequest.queryParam("accountNumber")
+                .orElseThrow(() -> new NoParamsException("Must be include account number params"));
+        String debitCardNumber = serverRequest.queryParam("cardNumber")
+                .orElseThrow(() -> new NoParamsException("Must be include card number params"));
+        return debitCardService.updateAccounts(debitCardNumber, accountNumber)
+                .flatMap(debitCardResponseDto -> ServerResponse.status(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(debitCardResponseDto))
+                .switchIfEmpty(
+                        ErrorResponse
+                                .buildBadResponse("The account with number: "
+                                                .concat(accountNumber).concat("can't be founded"),
+                                HttpStatus.NOT_FOUND))
+                .onErrorResume(throwable ->
+                        ErrorResponse.buildBadResponse(throwable.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
 

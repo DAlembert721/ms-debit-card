@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface DebitCardService extends BaseService<DebitCardResponseDto>{
     Mono<DebitCardResponseDto> findByCardNumber(String cardNumber);
     Mono<DebitCardResponseDto> createDebitCard(String accountNumber);
+    Mono<DebitCardResponseDto> updateAccounts(String cardNumber, String accountNumber);
 }

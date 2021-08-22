@@ -17,13 +17,9 @@ public class BankAccount {
 
     private Customer customer;
 
-    private String cardNumber;
+    private String accountNumber;
 
-    private List<Person> holders;
-
-    private List<Person> signers;
+    private String accountType;
 
     private Double balance;
-
-    private LocalDateTime date;
 }
