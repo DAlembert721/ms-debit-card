@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Document("DebitCard")
 @Getter
@@ -54,9 +55,17 @@ public class DebitCard {
     }
 
     static public DebitCard updateAccounts(BankAccount bankAccount, DebitCard debitCard) {
-        if(debitCard.getRegisteredAccounts().contains(bankAccount)) {
-            int index = debitCard.getRegisteredAccounts().indexOf(bankAccount);
-            Collections.swap(debitCard.getRegisteredAccounts(), 0, index);
+        if(debitCard.getRegisteredAccounts()
+                .stream()
+                .anyMatch(bankAccount1 -> bankAccount1.getId().equals(bankAccount.getId()))) {
+            int index = 0;
+            for (BankAccount value : debitCard.getRegisteredAccounts()) {
+                if(value.getId().equals(bankAccount.getId())) {
+                    Collections.swap(debitCard.getRegisteredAccounts(), 0, index);
+                    break;
+                }
+                index++;
+            }
         } else  {
             debitCard.getRegisteredAccounts().add(bankAccount);
         }

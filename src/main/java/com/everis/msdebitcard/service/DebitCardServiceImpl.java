@@ -48,6 +48,7 @@ public class DebitCardServiceImpl implements DebitCardService {
     public Mono<DebitCardResponseDto> createDebitCard(String accountNumber) {
         return transferWebClientService.findBankAccountByAccountNumber(accountNumber)
                 .flatMap(bankAccount -> {
+                    bankAccount.setAccountNumber(accountNumber);
                     DebitCard debitCard = DebitCard.generateBankAccount(bankAccount);
                     return debitCardRepository.save(debitCard);
                 })
@@ -59,14 +60,16 @@ public class DebitCardServiceImpl implements DebitCardService {
     @Override
     public Mono<DebitCardResponseDto> updateAccounts(String cardNumber, String accountNumber) {
         return transferWebClientService.findBankAccountByAccountNumber(accountNumber)
-                .flatMap(bankAccount ->
-                        debitCardRepository.findByCardNumber(cardNumber)
-                                .flatMap(debitCard -> {
-                                            DebitCard updatedCard = DebitCard.updateAccounts(bankAccount, debitCard);
-                                            return debitCardRepository.save(updatedCard);
-                                        }
-                                ).map(DebitCardResponseDto::entityToResponse)
-                                .switchIfEmpty(Mono.error(new NotFoundedException("Debit card", cardNumber)))
+                .flatMap(bankAccount -> {
+                            bankAccount.setAccountNumber(accountNumber);
+                            return debitCardRepository.findByCardNumber(cardNumber)
+                                    .flatMap(debitCard -> {
+                                                DebitCard updatedCard = DebitCard.updateAccounts(bankAccount, debitCard);
+                                                return debitCardRepository.save(updatedCard);
+                                            }
+                                    ).map(DebitCardResponseDto::entityToResponse)
+                                    .switchIfEmpty(Mono.error(new NotFoundedException("Debit card", cardNumber)));
+                        }
                 ).switchIfEmpty(Mono.error(new NotFoundedException("Account", accountNumber)))
                 .onErrorResume(Mono::error);
     }
