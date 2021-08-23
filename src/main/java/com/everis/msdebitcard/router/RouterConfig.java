@@ -15,7 +15,7 @@ public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> debitCardRoutes(DebitCardHandler handler) {
         return route(GET("/debit-cards"), handler::findAllDebitCards)
-                .andRoute(GET("/debit-cards/{id}"), handler::findDebitCardById)
+                .andRoute(GET("/debit-cards/{cardNumber}"), handler::findByCardNumber)
                 .andRoute(POST("/debit-cards"), handler::createDebitCard)
                 .andRoute(PUT("/debit-cards"), handler::updateAccounts);
     }

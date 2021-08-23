@@ -24,13 +24,13 @@ public class DebitCardHandler {
                 .body(debitCardService.findAll(), DebitCardResponseDto.class);
     }
 
-    public Mono<ServerResponse> findDebitCardById(ServerRequest serverRequest) {
-        String id = serverRequest.pathVariable("id");
-        return debitCardService.findById(id)
+    public Mono<ServerResponse> findByCardNumber(ServerRequest serverRequest) {
+        String cardNumber = serverRequest.pathVariable("cardNumber");
+        return debitCardService.findByCardNumber(cardNumber)
                 .flatMap(debitCardResponseDto -> ServerResponse.status(HttpStatus.FOUND)
                         .contentType(MediaType.APPLICATION_JSON).bodyValue(debitCardResponseDto))
                 .switchIfEmpty(
-                        ErrorResponse.buildBadResponse("The debit card with id: ".concat(id),HttpStatus.NOT_FOUND))
+                        ErrorResponse.buildBadResponse("The debit card with id: ".concat(cardNumber),HttpStatus.NOT_FOUND))
                 .onErrorResume(throwable ->
                         ErrorResponse.buildBadResponse(throwable.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
